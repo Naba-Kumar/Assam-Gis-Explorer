@@ -1,6 +1,6 @@
 const pg = require('pg');
 
-const pool1 = new pg.Pool({
+const poolUser = new pg.Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'testgis',
@@ -8,7 +8,7 @@ const pool1 = new pg.Pool({
     port: 5432
 });
 
-const pool2 = new pg.Pool({
+const poolShp = new pg.Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'testgis',
@@ -16,6 +16,8 @@ const pool2 = new pg.Pool({
     port: 5432
 });
 module.exports = {
-    query1: (text, params) => pool1.query(text, params),
-    query2: (text, params) => pool2.query(text, params)
+    poolUser: (text, params) => poolUser.query(text, params),
+    poolShp: (text, params) => poolShp.query(text, params)
 };
+
+console.log("connected")

@@ -41,7 +41,7 @@ h4 {
 #sidebar {
     max-width: 264px;
     min-width: 264px;
-    background: var(--bs-dark);
+    background: var(--bs-primary);
     transition: all 0.35s ease-in-out;
 }
 
@@ -53,7 +53,7 @@ h4 {
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     width: 100%;
-    background: var(--bs-dark-bg-subtle);
+    background: var(--bs-light-bg-subtle);
 }
 
 /* Sidebar Elements Style */
@@ -63,7 +63,7 @@ h4 {
 }
 
 .sidebar-logo a {
-    color: #e9ecef;
+    color: #ffffff;
     font-size: 1.15rem;
     font-weight: 600;
 }
