@@ -1,7 +1,7 @@
 
 {{>userHeader}}
 
-<form action="#" method="post">
+<form action="/register" method="post">
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="form-group first">
@@ -55,7 +55,7 @@
 
         <div class="col-md-2">
             <div class="form-group first">
-                <input type="submit" value="Get OTP" class="  btn px-4 btn-primary mt-4 "> 
+                <input type="submit" name="getotp" value="GetOTP" class="  btn px-4 btn-primary mt-4 "> 
 
             </div>
         </div>
@@ -69,7 +69,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-group first">
-                <input type="submit" value="Varify" class="btn px-4 btn-primary  mt-4">
+                <input type="submit" name="varifyotp" value="Varify" class="btn px-4 btn-primary  mt-4">
                 <!-- <input type="submit" value="Register" class="btn px-5 btn-primary  m-2"> -->
             </div>
         </div>

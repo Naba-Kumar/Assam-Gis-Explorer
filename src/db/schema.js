@@ -28,34 +28,35 @@ async function createTables() {
       );
 
       CREATE TABLE IF NOT EXISTS queries (
-        sn SERIAL PRIMARY KEY,
+        queryid SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         mobile VARCHAR(11) NOT NULL,
         occupation VARCHAR(100) NOT NULL,
         reason VARCHAR(255) NOT NULL,
         message VARCHAR(400) NOT NULL,
+        isresolved BOOLEAN
       ); 
 
       CREATE TABLE IF NOT EXISTS catalog (
-        sn SERIAL PRIMARY KEY,
+        fileid SERIAL PRIMARY KEY,
         title VARCHAR(200) NOT NULL,
         filename VARCHAR(200) NOT NULL,
         wmslink VARCHAR(200) NOT NULL,
         description VARCHAR(300) NOT NULL,
-        display BOOLEAN
+        visibility BOOLEAN
       ); 
 
       CREATE TABLE IF NOT EXISTS requests (
-        sn SERIAL PRIMARY KEY,
+        requestno SERIAL PRIMARY KEY,
         userid INT,
         filename  VARCHAR(255) NOT NULL,
         status BOOLEAN
       ); 
 
-      // CREATE TABLE IF NOT EXISTS varifiedemail (
-      //   sn SERIAL PRIMARY KEY,
-      //   email  VARCHAR(200) NOT NULL,
-      // ); 
+      CREATE TABLE IF NOT EXISTS varifiedemail (
+        sn SERIAL PRIMARY KEY,
+        email  VARCHAR(200) NOT NULL,
+      ); 
 
       CREATE TABLE IF NOT EXISTS otpregister (
         sn SERIAL PRIMARY KEY,
