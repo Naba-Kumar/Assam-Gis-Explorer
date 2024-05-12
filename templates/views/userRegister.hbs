@@ -1,18 +1,18 @@
 
 {{>userHeader}}
 
-<form action="/register" method="post">
+<form action="/user/register" method="POST">
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="form-group first">
                 <label for="fname">First Name *</label>
-                <input type="text" class="form-control" placeholder="e.g. John" id="fname">
+                <input type="text" class="form-control" placeholder="First Name" id="fname" name="fname">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group first">
                 <label for="lname">Last Name *</label>
-                <input type="text" class="form-control" placeholder="e.g. Smith" id="lname">
+                <input type="text" class="form-control" placeholder="Last Name" id="lname" name="lname">
             </div>
         </div>
     </div>
@@ -20,13 +20,13 @@
         <div class="col-md-6">
             <div class="form-group first">
                 <label for="fname">Mobile No *</label>
-                <input type="text" class="form-control" placeholder="e.g. John" id="fname">
+                <input type="text" class="form-control" placeholder="8486xxx644" id="phone" name="phone">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group first">
                 <label for="lname">Organization Name *</label>
-                <input type="text" class="form-control" placeholder="e.g. Smith" id="lname">
+                <input type="text" class="form-control" placeholder="Your Organization" id="organization" name="organization">
             </div>
         </div>
     </div>
@@ -34,13 +34,13 @@
         <div class="col-md-6">
             <div class="form-group first">
                 <label for="fname">Department *</label>
-                <input type="text" class="form-control" placeholder="e.g. John" id="fname">
+                <input type="text" class="form-control" placeholder="Your department" id="department" name="department">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group first">
                 <label for="lname">Designation *</label>
-                <input type="text" class="form-control" placeholder="e.g. Smith" id="lname">
+                <input type="text" class="form-control" placeholder="Your designation" id="designation" name="designation">
             </div>
         </div>
     </div>
@@ -49,13 +49,13 @@
         <div class="col-md-4">
             <div class="form-group first">
                 <label for="lname">E-mail address *</label>
-                <input type="text" class="form-control" placeholder="e.g. https://google.com" id="lname">
+                <input type="text" class="form-control" placeholder="example@xyz.com" id="email" name="email">
             </div>
         </div>
 
         <div class="col-md-2">
             <div class="form-group first">
-                <input type="submit" name="getotp" value="GetOTP" class="  btn px-4 btn-primary mt-4 "> 
+                <input type="submit" name="submit" value="GetOTP" class="  btn px-4 btn-primary mt-4" > 
 
             </div>
         </div>
@@ -63,13 +63,13 @@
         <div class="col-md-3">
             <div class="form-group first">
                 <label for="lname">Enter OTP *</label>
-                <input type="text" class="form-control" placeholder="OTP" id="lname">
+                <input type="text" class="form-control" placeholder="6 digit otp" id="otp" name="otp">
                 <!-- btn px-5 btn-primary  m-2 -->
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group first">
-                <input type="submit" name="varifyotp" value="Varify" class="btn px-4 btn-primary  mt-4">
+                <input type="submit" name="submit" value="Verify" class="btn px-4 btn-primary  mt-4">
                 <!-- <input type="submit" value="Register" class="btn px-5 btn-primary  m-2"> -->
             </div>
         </div>
@@ -79,15 +79,15 @@
         <div class="col-md-6">
 
             <div class="form-group first">
-                <label for="id-proof">Upload Your ID Proof *</label>
-                <input type="file" class="form-control " id="id-proof" required>
+                <label for="id-proof">Upload Your ID Proof[.png, .jpg, .jpeg] *</label>
+                <input type="file" class="form-control" id="id-proof" name="id-proof">
             </div>
         </div>
         <div class="col-md-6">
 
             <div class="form-group first">
-                <label for="lname">User Type *</label>
-                <select class="form-control" id="user-type" required>
+                <label for="user-type">User Type *</label>
+                <select class="form-control" id="user-type" name="user-type">
                     <option value="">Select User Type</option>
                     <option value="researcher">Researcher</option>
                     <option value="govt-employee">Government Employee</option>
@@ -103,7 +103,7 @@
 
             <div class="form-group last mb-3">
                 <label for="password">About You</label>
-                <textarea type="text" class="form-control" placeholder="Your Password" id="password"></textarea>
+                <textarea type="text" class="form-control" placeholder="About You..." id="about" name="about"></textarea>
             </div>
         </div>
 
@@ -113,14 +113,14 @@
 
             <div class="form-group last mb-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" placeholder="Your Password" id="password">
+                <input type="password" class="form-control" placeholder="Your Password" id="password" name="password">
             </div>
         </div>
         <div class="col-md-6">
 
             <div class="form-group last mb-3">
                 <label for="re-password">Re-type Password</label>
-                <input type="password" class="form-control" placeholder="Your Password" id="re-password">
+                <input type="password" class="form-control" placeholder="re-Password" id="re-password" name="re-password">
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <input type="submit" value="Register" class="btn px-5 btn-primary mt-2">
+    <input type="submit" name="submit" value="Register" class="btn px-5 btn-primary mt-2">
 
 </form>
 

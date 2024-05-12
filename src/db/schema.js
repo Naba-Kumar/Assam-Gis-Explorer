@@ -4,27 +4,26 @@ async function createTables() {
   try {
     await pool.poolUser.query(`
       CREATE TABLE IF NOT EXISTS registered (
-        userid SERIAL PRIMARY KEY,
+        user_id SERIAL PRIMARY KEY,
         first_name VARCHAR(255) NOT NULL,
         last_name VARCHAR(255) NOT NULL,
         mobile VARCHAR(20) NOT NULL,
         organization VARCHAR(255) NOT NULL,
         department VARCHAR(255) NOT NULL,
         designation VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        id_proof BYTEA NOT NULL,
+        email VARCHAR(255) UNIQUE,
         user_type VARCHAR(50) NOT NULL,
         about VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        CONSTRAINT email_unique UNIQUE (email_address),
+        id_proof BYTEA NOT NULL
       );
 
       CREATE TABLE IF NOT EXISTS admin (
-        userid SERIAL PRIMARY KEY,
+        admin_id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         designation VARCHAR(255) NOT NULL,
         ip VARCHAR(40) NOT NULL,
-        password VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL
       );
 
       CREATE TABLE IF NOT EXISTS queries (
@@ -34,7 +33,7 @@ async function createTables() {
         occupation VARCHAR(100) NOT NULL,
         reason VARCHAR(255) NOT NULL,
         message VARCHAR(400) NOT NULL,
-        isresolved BOOLEAN
+        isresolved BOOLEAN NOT NULL
       ); 
 
       CREATE TABLE IF NOT EXISTS catalog (
@@ -53,18 +52,16 @@ async function createTables() {
         status BOOLEAN
       ); 
 
+      CREATE TABLE IF NOT EXISTS emailotp (
+        sn SERIAL PRIMARY KEY,
+        email  VARCHAR(200) NOT NULL,
+        otp INTEGER NOT NULL
+      ); 
+
       CREATE TABLE IF NOT EXISTS varifiedemail (
         sn SERIAL PRIMARY KEY,
-        email  VARCHAR(200) NOT NULL,
+        email  VARCHAR(200) NOT NULL
       ); 
-
-      CREATE TABLE IF NOT EXISTS otpregister (
-        sn SERIAL PRIMARY KEY,
-        email  VARCHAR(200) NOT NULL,
-        otp INTEGER,
-        varify BOOLEAN
-      ); 
-
 
       CREATE TABLE IF NOT EXISTS  useraccess (
         sn SERIAL PRIMARY KEY,
@@ -73,9 +70,6 @@ async function createTables() {
         fileids INTEGER[]
       ); 
 
-
-
-    // --  Add other tables here if needed
     `);
     console.log('Tables created successfully.');
   } catch (error) {

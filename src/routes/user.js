@@ -1,8 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 const twilio = require('twilio');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
+const bodyParser = require('body-parser');
+const pool = require('../db/connection');
+
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+
+
+// import { v4 as uuidv4 } from 'uuid';
+
+
+
+
 
 // Initialize Twilio client
 // const accountSid = 'YOUR_TWILIO_ACCOUNT_SID';
@@ -10,16 +22,15 @@ const nodemailer = require('nodemailer');
 // const twilioClient = twilio(accountSid, authToken);
 // const twilioPhoneNumber = 'YOUR_TWILIO_PHONE_NUMBER';
 // // Initialize Nodemailer transporter
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: 'YOUR_EMAIL_ADDRESS',
-//         pass: 'YOUR_EMAIL_PASSWORD'
-//     }
-// });
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.email,
+        pass: process.env.appw
+    }
+});
 
-router.use(bodyParser.urlencoded({ extended: true }));
-const registrations = {};
+// // const registrations = {};
 
 
 router.get('/', (req, res) => {
@@ -27,116 +38,89 @@ router.get('/', (req, res) => {
 
 });
 
-// router.post('/getotp', (req, res) => {
-//     try {
-//         const { email_address } = req.body;
-
-//         // Generate OTP (random 6-digit number)
-//         const otp = Math.floor(100000 + Math.random() * 900000);
-
-//         // Generate session ID
-//         const sessionId = uuid.v4();
-
-//         // Save OTP and session ID to the database
-//         const client = await pool.connect();
-//         await client.query('INSERT INTO otps (email_address, otp) VALUES ($1, $2)', [email_address, otp]);
-//         client.release();
-
-//         // Send OTP via email
-//         await transporter.sendMail({
-//             from: 'YOUR_EMAIL_ADDRESS',
-//             to: email_address,
-//             subject: 'OTP for Registration',
-//             text: `Your OTP for registration is: ${otp}`
-//         });
-
-//         res.status(200).send({ message: 'OTP sent successfully', sessionId });
-//     } catch (err) {
-//         console.error('Error in sending OTP via email:', err);
-//         res.status(500).send({ error: 'Internal Server Error' });
-//     }
-// });
-
-
-// router.post('/varifyotp', (req, res) => {
-//     // const { otp } = req.body;
-//     // session ID check here
-//     try {
-//         const { email_address, otp } = req.body;
-
-//         // Retrieve stored OTP and session ID from the database
-//         const client = await pool.connect();
-//         const result = await client.query('SELECT otp, session_id FROM otps WHERE email_address = $1', [email_address]);
-//         const storedOtp = result.rows[0].otp;
-//         const sessionId = result.rows[0].session_id;
-//         client.release();
-
-//         if (otp === storedOtp) {
-//             res.status(200).send({ message: 'OTP verified successfully', sessionId });
-//         } else {
-//             res.status(400).send({ error: 'Invalid OTP' });
-//         }
-//     } catch (err) {
-//         console.error('Error in OTP verification:', err);
-//         res.status(500).send({ error: 'Internal Server Error' });
-//     }
-
-// });
 
 
 // ------Register route starts
 
 router.post('/register', async (req, res) => {
 
-    const action = req.body.action;
+    const action = req.body.submit;
     const data = req.body.data;
+    console.log("------------------")
+
+    console.log(process.env.email)
+    console.log("------------------")
+
+    console.log(process.env.appw)
+    console.log("------------------")
+
+    // console.log(req.body.email)
+    console.log("------------------")
+    // console.log(req.body.action)
+
+
+    // console.log(req.body)
+    console.log("------------------")
 
     // Check which button was clicked based on its value
-    if (action === 'getotp') {
+    if (action === "GetOTP") {
+        console.log("click getopt")
         // Handle action 1
+        const email = req.body.email;
+
         try {
-            const { email_address } = req.body;
 
             // Generate OTP (random 6-digit number)
             const otp = Math.floor(100000 + Math.random() * 900000);
 
-            // Generate session ID
-            const sessionId = uuid.v4();
-
             // Save OTP and session ID to the database
-            const client = await pool.connect();
-            await client.query('INSERT INTO otps (email_address, otp) VALUES ($1, $2)', [email_address, otp]);
+            const client = await pool.poolUser.connect();
+            await client.query(`INSERT INTO emailotp (email, otp) VALUES ($1, $2)`, [email, otp]);
             client.release();
 
             // Send OTP via email
             await transporter.sendMail({
-                from: 'YOUR_EMAIL_ADDRESS',
-                to: email_address,
-                subject: 'OTP for Registration',
-                text: `Your OTP for registration is: ${otp}`
+                from: process.env.email,
+                to: req.body.email,
+                subject: 'OTP for Registration AGISE',
+                text: `Your OTP for Registration ASSAM GIS EXPLORER is: ${otp}`
             });
 
-            res.status(200).send({ message: 'OTP sent successfully', sessionId });
+            res.status(200).send({ message: 'OTP sent successfully' });
         } catch (err) {
             console.error('Error in sending OTP via email:', err);
             res.status(500).send({ error: 'Internal Server Error' });
         }
-        console.log('Action 1 triggered with data:', data);
     }
 
-    else if (action === 'varify') {
+    else if (action === 'Verify') {
+        console.log("click verify")
+
         // Handle action 2
         try {
-            const { email_address, otp } = req.body;
+            // const { email_address} = req.body;
+            const email = req.body.email;
+            const clientotp = req.body.otp;
+
 
             // Retrieve stored OTP and session ID from the database
-            const client = await pool.connect();
-            const result = await client.query('SELECT otp FROM otps WHERE email_address = $1', [email_address]);
-            const storedOtp = result.rows[0].otp;
+            const client = await pool.poolUser.connect();
+            const result = await client.query(`SELECT otp FROM emailotp WHERE email = $1`, [email]);
+            // const storedOtp = result.rows[0].otp;
+            const storedOtp = result;
+            console.log(`REsult - ${result}`)
+
             client.release();
 
-            if (otp === storedOtp) {
-                res.status(200).send({ message: 'OTP verified successfully', sessionId });
+            if (clientotp === storedOtp) {
+
+                const client = await pool.poolUser.connect();
+                const result = await client.query(`INSERT INTO verifiedemails (email) VALUES ($1)`, [email]);
+                // const storedOtp = result.rows[0].otp;
+                // await client.query('DELETE FROM emailotp WHERE EMAIL = $1', [email]);
+                client.release();
+                res.status(200).send({ message: 'OTP verified successfully' });
+
             } else {
                 res.status(400).send({ error: 'Invalid OTP' });
             }
@@ -147,22 +131,60 @@ router.post('/register', async (req, res) => {
 
     }
 
-    else if (action === 'register') {
-        try {
-            const { email_address } = req.body;
-            const result = await client.query('SELECT otp FROM otps WHERE email_address = $1', [email_address]);
-            if(result  && req.sessionId==sessionId){
+    else if (action === 'Register') {
+        console.log("click Register")
 
+
+        const {
+            first_name,
+            last_name,
+            mobile,
+            organization,
+            department,
+            designation,
+            email,
+            user_type,
+            about,
+            password
+        } = req.body;
+
+        // Get file data
+        const id_proof = req.file.buffer; // This will contain the file buffer
+
+        const result = await client.query(`SELECT otp FROM emailopt WHERE email = $1`, [email]);
+
+        if (result === req.body.otp) {
+
+            try {
+                // Insert data into PostgreSQL database
+                const query = `
+                      INSERT INTO regiters (user_id, first_name, last_name, mobile, organization, department, designation, email, user_type, about, password, id_proof)
+                      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                    `;
+                const values = [
+                    first_name,
+                    last_name,
+                    mobile,
+                    organization,
+                    department,
+                    designation,
+                    email,
+                    user_type,
+                    about,
+                    password,
+                    id_proof // Assuming id_proof is a bytea column in 
+                ];
+
+                await client.query(query, values);
+                res.status(200).send('Registered successfully');
+            } catch (error) {
+                console.error('Error inserting data:', error);
+                res.status(500).send('Something Went Wrong!');
             }
 
-
-
-        }catch{
-
         }
+        res.status(400).send('Verify OTP First');
 
-        // Handle action 2
-        console.log('Action 2 triggered with data:', data);
     }
 });
 
