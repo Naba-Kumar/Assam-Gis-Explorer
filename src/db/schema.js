@@ -11,7 +11,7 @@ async function createTables() {
         organization VARCHAR(255) NOT NULL,
         department VARCHAR(255) NOT NULL,
         designation VARCHAR(255) NOT NULL,
-        email VARCHAR(255) UNIQUE,
+        email VARCHAR(255) NOT NULL,
         user_type VARCHAR(50) NOT NULL,
         about VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
@@ -58,7 +58,7 @@ async function createTables() {
         otp INTEGER NOT NULL
       ); 
 
-      CREATE TABLE IF NOT EXISTS varifiedemail (
+      CREATE TABLE IF NOT EXISTS verifiedemails (
         sn SERIAL PRIMARY KEY,
         email  VARCHAR(200) NOT NULL
       ); 
